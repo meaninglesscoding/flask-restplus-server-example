@@ -1,0 +1,46 @@
+name: DevSecOps Pipeline
+on: push
+permissions:
+  actions: read
+  contents: read
+  
+jobs: 
+  snyk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: master
+
+      - name: Pip Install
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/python@master
+        continue-on-error: true # To make sure that SARIF upload gets called
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: test
+          args: '--skip-unresolved -d  --sarif'
+          
+  zap_scan:
+    runs-on: ubuntu-latest
+    name: zap
+    needs: snyk
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: master
+
+      - name: ZAP Scan
+        uses: zaproxy/action-baseline@v0.6.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          docker_name: 'owasp/zap2docker-stable'
+          target: 'https://teste.com.br'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
