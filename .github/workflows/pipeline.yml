@@ -1,5 +1,6 @@
 name: DevSecOps Pipeline
 on: push
+
 permissions:
   actions: read
   contents: read
