@@ -1,5 +1,4 @@
-# Name of this GitHub Actions workflow.
-name: Semgrep
+name: Semgrep (SAST)
 
 on:
   # Scan changed files in PRs (diff-aware scanning):
@@ -13,7 +12,7 @@ on:
 jobs:
   semgrep:
     # User definable name of this GitHub Actions job.
-    name: semgrep/ci 
+    name: Semgrep (SAST)
     # If you are self-hosting, change the following `runs-on` value: 
     runs-on: ubuntu-latest
 
