@@ -5,7 +5,7 @@ permissions:
   actions: read
   contents: read
   
- jobs: 
+jobs: 
 #  snyk:
 #    runs-on: ubuntu-latest
 #    steps:
